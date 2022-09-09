@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { members } from "@members";
+import { blogUrl } from "@blogUrl";
 import { getMemberPath } from "@src/utils/helper";
 
-export const ScrollableMembers: React.FC = () => {
+export const ScrollableblogUrl: React.FC = () => {
   return (
-    <div className="scrollable-members">
-      {members.map((member, i) => (
+    <div className="scrollable-blogUrl">
+      {blogUrl.map((member, i) => (
         <Link
           key={`scrollable-member-${i}`}
           href={getMemberPath(member.id)}

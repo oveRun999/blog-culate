@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import Parser from "rss-parser";
-import { members } from "../../members";
+import { blogUrl } from "../../blogUrl";
 import { PostItem, Member } from "../types";
 
 type FeedItem = {
@@ -40,9 +40,7 @@ async function fetchFeedItems(url: string) {
         dateMiliSeconds: isoDate ? new Date(isoDate).getTime() : 0,
       };
     })
-    .filter(
-      ({ title, link }) => title && link && isValidUrl(link)
-    ) as FeedItem[];
+    .filter(({ title, link }) => title && link) as FeedItem[];
 }
 
 async function getFeedItemsFromSources(sources: undefined | string[]) {
@@ -56,15 +54,13 @@ async function getFeedItemsFromSources(sources: undefined | string[]) {
 }
 
 async function getMemberFeedItems(member: Member): Promise<PostItem[]> {
-  const { id, sources, name, includeUrlRegex, excludeUrlRegex } = member;
+  const { sources, includeUrlRegex, excludeUrlRegex } = member;
   const feedItems = await getFeedItemsFromSources(sources);
   if (!feedItems) return [];
 
   let postItems = feedItems.map((item) => {
     return {
       ...item,
-      authorName: name,
-      authorId: id,
     };
   });
   // remove items which not matches includeUrlRegex
@@ -84,7 +80,7 @@ async function getMemberFeedItems(member: Member): Promise<PostItem[]> {
 }
 
 (async function () {
-  for (const member of members) {
+  for (const member of blogUrl) {
     const items = await getMemberFeedItems(member);
     if (items) allPostItems = [...allPostItems, ...items];
   }

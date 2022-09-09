@@ -14,9 +14,8 @@ import {
 dayjs.extend(relativeTime);
 
 const PostLink: React.FC<{ item: PostItem }> = (props) => {
-  const { authorId, title, isoDate, link, dateMiliSeconds, content } =
-    props.item;
-  const member = getMemberById(authorId);
+  const { title, isoDate, link, dateMiliSeconds, content } = props.item;
+  const member = props.item;
   if (!member) return null;
 
   const { hostname, origin } = new URL(link);
