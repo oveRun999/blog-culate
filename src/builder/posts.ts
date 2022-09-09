@@ -25,16 +25,18 @@ let allPostItems: PostItem[] = [];
 
 async function fetchFeedItems(url: string) {
   const feed = await parser.parseURL(url);
+
   if (!feed?.items?.length) return [];
 
   // return item which has title and link
   return feed.items
-    .map(({ title, contentSnippet, link, isoDate }) => {
+    .map(({ title, contentSnippet, link, isoDate, content }) => {
       return {
         title,
         contentSnippet: contentSnippet?.replace(/\n/g, ""),
         link,
         isoDate,
+        content: content?.match(/<img[^>]+>/i),
         dateMiliSeconds: isoDate ? new Date(isoDate).getTime() : 0,
       };
     })

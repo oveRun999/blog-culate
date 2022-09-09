@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
@@ -13,7 +14,8 @@ import {
 dayjs.extend(relativeTime);
 
 const PostLink: React.FC<{ item: PostItem }> = (props) => {
-  const { authorId, title, isoDate, link, dateMiliSeconds } = props.item;
+  const { authorId, title, isoDate, link, dateMiliSeconds, content } =
+    props.item;
   const member = getMemberById(authorId);
   if (!member) return null;
 
@@ -21,37 +23,37 @@ const PostLink: React.FC<{ item: PostItem }> = (props) => {
 
   return (
     <article className="post-link">
-      <Link href={getMemberPath(member.id)} passHref>
-        <a className="post-link__author">
-          <img
-            src={member.avatarSrc}
-            className="post-link__author-img"
-            width={35}
-            height={35}
-            alt={member.name}
-          />
-          <div className="post-link__author-name">
-            <div className="post-link__author-name">{member.name}</div>
-            <time dateTime={isoDate} className="post-link__date">
-              {dayjs(isoDate).fromNow()}
-            </time>
-          </div>
-        </a>
-      </Link>
       <a href={link} className="post-link__main-link">
-        <h2 className="post-link__title">{title}</h2>
-        {hostname && (
-          <div className="post-link__site">
-            <img
-              src={getFaviconSrcFromOrigin(origin)}
-              width={14}
-              height={14}
-              className="post-link__site-favicon"
-              alt={hostname}
-            />
-            {hostname}
+        {(content && (
+          <div
+            className="post-link__imgwrapper"
+            dangerouslySetInnerHTML={{
+              __html: content,
+            }}
+          />
+        )) || (
+          <div className="post-link__imgwrapper">
+            <img src="https://placehold.jp/d0d3fb/ffffff/300x200.jpg?text=no%20image&css=%7B%22background%22%3A%22%20-webkit-gradient(linear%2C%20left%20top%2C%20left%20bottom%2C%20from(%239499e6)%2C%20to(%23d0d3fb))%22%2C%22font-size%22%3A%2214px%22%7D" />
           </div>
         )}
+        <div className="post-link__wrapper">
+          <h2 className="post-link__title">{title}</h2>
+          <time dateTime={isoDate} className="post-link__date">
+            {dayjs(isoDate).fromNow()}
+          </time>
+          {hostname && (
+            <div className="post-link__site">
+              <img
+                src={getFaviconSrcFromOrigin(origin)}
+                width={14}
+                height={14}
+                className="post-link__site-favicon"
+                alt={hostname}
+              />
+              {hostname}
+            </div>
+          )}
+        </div>
       </a>
       {dateMiliSeconds && dateMiliSeconds > Date.now() - 86400000 * 3 && (
         <div className="post-link__new-label">NEW</div>
