@@ -4,13 +4,9 @@ import Link from "next/link";
 import posts from "@.contents/posts.json";
 import { config } from "@site.config";
 import { PostItem } from "@src/types";
-import { ScrollableblogUrl } from "@src/components/ScrollableblogUrl";
 import { PostList } from "@src/components/PostList";
 import { PageSEO } from "@src/components/PageSEO";
-import {
-  ContentWrapper,
-  UndoWrapForScroll,
-} from "@src/components/ContentWrapper";
+import { ContentWrapper } from "@src/components/ContentWrapper";
 
 const Page: NextPage = () => {
   return (
@@ -29,7 +25,7 @@ const Page: NextPage = () => {
           </div>
 
           <div className="home-posts-container">
-            <PostList items={posts as PostItem[]} />
+            <PostList items={posts as unknown as PostItem[]} />
           </div>
         </ContentWrapper>
       </section>

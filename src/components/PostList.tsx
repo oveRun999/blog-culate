@@ -1,15 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { useState } from "react";
-import Link from "next/link";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import { PostItem } from "@src/types";
-import {
-  getFaviconSrcFromOrigin,
-  getMemberPath,
-  getMemberById,
-} from "@src/utils/helper";
+import { getFaviconSrcFromOrigin } from "@src/utils/helper";
 
 dayjs.extend(relativeTime);
 
